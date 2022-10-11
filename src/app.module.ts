@@ -1,8 +1,12 @@
+import { UserModel } from 'src/users/entities/user.model';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { configuration } from 'src/config';
+import { ArticlesModule } from './articles/articles.module';
+import { UsersModule } from './users/users.module';
+import { ArticleModel } from './articles/entities/article.model';
 
 @Module({
   imports: [
@@ -21,10 +25,12 @@ import { configuration } from 'src/config';
         password: ConfigService.get('password'),
         database: ConfigService.get('database'),
         autoLoadModels: true,
-        models: [],
+        models: [ArticleModel, UserModel],
       })
     }),
-    AuthModule
+    AuthModule,
+    ArticlesModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
