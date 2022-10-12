@@ -7,6 +7,8 @@ import { configuration } from 'src/config';
 import { ArticlesModule } from './articles/articles.module';
 import { UsersModule } from './users/users.module';
 import { ArticleModel } from './articles/entities/article.model';
+import { TokensModule } from './tokens/tokens.module';
+import { TokenModel } from './tokens/entities/token.model';
 
 @Module({
   imports: [
@@ -25,12 +27,13 @@ import { ArticleModel } from './articles/entities/article.model';
         password: ConfigService.get('password'),
         database: ConfigService.get('database'),
         autoLoadModels: true,
-        models: [ArticleModel, UserModel],
+        models: [ArticleModel, UserModel, TokenModel],
       })
     }),
     AuthModule,
     ArticlesModule,
     UsersModule,
+    TokensModule,
   ],
   controllers: [],
   providers: [],
