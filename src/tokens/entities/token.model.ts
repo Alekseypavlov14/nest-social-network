@@ -1,5 +1,5 @@
 import { UserModel } from './../../users/entities/user.model'
-import { BelongsTo, Column, Model, Table } from 'sequelize-typescript'
+import { AllowNull, BelongsTo, Column, Model, Table } from 'sequelize-typescript'
 import { User } from 'src/users/entities/user.entity'
 import { DataTypes } from 'sequelize'
 
@@ -18,8 +18,9 @@ export class TokenModel extends Model<TokenModel, TokenCreationModel> {
   })
   id: number
 
+  @AllowNull(false)
   @Column({
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   })
   token: string
 

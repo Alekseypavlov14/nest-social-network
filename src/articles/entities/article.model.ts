@@ -1,4 +1,4 @@
-import { BelongsTo, Column, Model, Table } from 'sequelize-typescript'
+import { AllowNull, BelongsTo, Column, Model, Table } from 'sequelize-typescript'
 import { UserModel } from 'src/users/entities/user.model'
 import { DataTypes } from 'sequelize'
 import { User } from 'src/users/entities/user.entity'
@@ -21,8 +21,9 @@ export class ArticleModel extends Model<ArticleModel, ArticleCreationModel> {
   @BelongsTo(() => UserModel, 'authorId')
   author: User
 
+  @AllowNull(false)
   @Column({
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   })
   content: string
 }

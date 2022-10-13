@@ -2,7 +2,6 @@ import { TokensService } from './../tokens/tokens.service'
 import { Injectable } from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UserModel } from './entities/user.model'
-import { TokensPair } from 'src/tokens/types/TokensPair.interface'
 
 @Injectable()
 export class UsersService {
@@ -13,8 +12,12 @@ export class UsersService {
     return await this.TokensService.generateTokenPair(user.id)
   }
 
-  async findOne(id: number): Promise<UserModel> {
+  async findById(id: number): Promise<UserModel> {
     return await UserModel.findOne({ where: { id } })
+  }
+
+  async findByLogin(login: string): Promise<UserModel> {
+    return await UserModel.findOne({ where: { login } })
   }
 
   async remove(id: number) {
