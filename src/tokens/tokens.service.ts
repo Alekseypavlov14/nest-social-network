@@ -19,8 +19,8 @@ export class TokensService {
     const accessKey = this.ConfigService.getOrThrow('accessKey')
     const refreshKey = this.ConfigService.getOrThrow('refreshKey')
 
-    const accessToken = sign({ userId }, accessKey)
-    const refreshToken = sign({ userId }, refreshKey)
+    const accessToken = sign({ userId }, accessKey, { expiresIn: '30s' })
+    const refreshToken = sign({ userId }, refreshKey, { expiresIn: '180d' })
 
     await this.updateRefreshTokenInDB(userId, refreshToken)
 
