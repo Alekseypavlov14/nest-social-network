@@ -1,21 +1,23 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { TokensService } from './../tokens/tokens.service'
+import { Injectable } from '@nestjs/common'
+import { CreateUserDto } from './dto/create-user.dto'
+import { UserModel } from './entities/user.model'
+import { TokensPair } from 'src/tokens/types/TokensPair.interface'
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private TokensService: TokensService) {}
+
+  async create(createUserDto: CreateUserDto) {
+    const user = await UserModel.create(createUserDto)
+    return await this.TokensService.generateTokenPair(user.id)
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findOne(id: number): Promise<UserModel> {
+    return await UserModel.findOne({ where: { id } })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    return await UserModel.destroy({ where: { id } })
   }
 }

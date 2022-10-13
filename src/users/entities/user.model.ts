@@ -1,4 +1,5 @@
-import { Column, Model, Table } from "sequelize-typescript"
+import { TokenModel } from './../../tokens/entities/token.model'
+import { Column, Model, Table } from 'sequelize-typescript'
 import { DataTypes } from 'sequelize'
 
 interface UserCreationModel {
@@ -17,12 +18,13 @@ export class UserModel extends Model<UserModel, UserCreationModel> {
   id: number
 
   @Column({
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    unique: true,
   })
   login: string
 
   @Column({
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   })
   password: string
 }

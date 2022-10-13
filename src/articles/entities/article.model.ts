@@ -22,7 +22,7 @@ export class ArticleModel extends Model<ArticleModel, ArticleCreationModel> {
   author: User
 
   @Column({
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   })
   content: string
 }

@@ -1,6 +1,6 @@
-import { UserModel } from './../../users/entities/user.model';
-import { BelongsTo, Column, Model, Table } from "sequelize-typescript"
-import { User } from "src/users/entities/user.entity"
+import { UserModel } from './../../users/entities/user.model'
+import { BelongsTo, Column, Model, Table } from 'sequelize-typescript'
+import { User } from 'src/users/entities/user.entity'
 import { DataTypes } from 'sequelize'
 
 interface TokenCreationModel {
@@ -14,12 +14,12 @@ export class TokenModel extends Model<TokenModel, TokenCreationModel> {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
-    unique: true
+    unique: true,
   })
   id: number
 
   @Column({
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   })
   token: string
 

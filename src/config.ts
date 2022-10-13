@@ -5,5 +5,5 @@ export const configuration = () => ({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   accessKey: process.env.ACCESS_SECRET_KEY,
-  refreshKey: process.env.REFRESH_SECRET_KEY
+  refreshKey: process.env.REFRESH_SECRET_KEY,
 })

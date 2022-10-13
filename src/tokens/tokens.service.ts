@@ -1,11 +1,10 @@
-import { TokenModel } from './entities/token.model';
-import { EncodedData } from './types/EncodedData.interface';
-import { ConfigService } from '@nestjs/config';
-import { Injectable } from '@nestjs/common';
+import { TokenModel } from './entities/token.model'
+import { EncodedData } from './types/EncodedData.interface'
+import { ConfigService } from '@nestjs/config'
+import { Injectable } from '@nestjs/common'
 import { sign, verify } from 'jsonwebtoken'
-import { TokensPair } from './types/TokensPair.interface';
-import { UserModel } from 'src/users/entities/user.model';
-import { Token } from './entities/token.entity';
+import { TokensPair } from './types/TokensPair.interface'
+import { UserModel } from 'src/users/entities/user.model'
 
 @Injectable()
 export class TokensService {
@@ -17,8 +16,8 @@ export class TokensService {
   }
 
   async generateTokenPair(userId: number): Promise<TokensPair> {
-    const accessKey = this.ConfigService.get('accessKey')
-    const refreshKey = this.ConfigService.get('refreshKey')
+    const accessKey = this.ConfigService.getOrThrow('accessKey')
+    const refreshKey = this.ConfigService.getOrThrow('refreshKey')
 
     const accessToken = sign({ userId }, accessKey)
     const refreshToken = sign({ userId }, refreshKey)
@@ -41,11 +40,11 @@ export class TokensService {
     return tokensPair
   }
 
-  private async updateRefreshTokenInDB(userId: number, refreshToken: string): Promise<Token> {
+  private async updateRefreshTokenInDB(userId: number, refreshToken: string) {
     const user = await UserModel.findOne({ where: { id: userId } })
     if (!user) return
 
-    const token = await TokenModel.findOne({ where: { user } })
+    const token = await TokenModel.findOne({ include: UserModel })
     if (!token) return await TokenModel.create({ user, token: refreshToken })
 
     token.token = refreshToken
