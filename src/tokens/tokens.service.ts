@@ -1,7 +1,7 @@
 import { TokenModel } from './entities/token.model'
 import { EncodedData } from './types/EncodedData.interface'
 import { ConfigService } from '@nestjs/config'
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { sign, verify } from 'jsonwebtoken'
 import { TokensPair } from './types/TokensPair.interface'
 import { UserModel } from 'src/users/entities/user.model'
@@ -29,8 +29,7 @@ export class TokensService {
 
   async refreshTokenPair(refreshToken: string): Promise<TokensPair> {
     const token = await TokenModel.findOne({ where: { token: refreshToken } })
-
-    if (!token) return
+    if (!token) throw new UnauthorizedException()
 
     const userId = token.user.id
     const tokensPair = await this.generateTokenPair(userId)
@@ -42,7 +41,7 @@ export class TokensService {
 
   private async updateRefreshTokenInDB(userId: number, refreshToken: string) {
     const user = await UserModel.findOne({ where: { id: userId } })
-    if (!user) return
+    if (!user) throw new BadRequestException()
 
     const token = await TokenModel.findOne({ include: UserModel })
     if (!token) return await TokenModel.create({ user, token: refreshToken })
