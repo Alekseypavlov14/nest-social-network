@@ -33,7 +33,9 @@ export class AuthService {
 
     const passwordHash = await hash(password, this.HASH_SALT)
 
-    const user = { login, password: passwordHash }
-    return await this.UsersService.create(user)
+    const userCreationModel = { login, password: passwordHash }
+    const user = await this.UsersService.create(userCreationModel)
+
+    return await this.TokensService.generateTokenPair(user.id)
   }
 }

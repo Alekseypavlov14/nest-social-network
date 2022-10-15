@@ -1,7 +1,7 @@
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { TokenModel } from './entities/token.model'
 import { EncodedData } from './types/EncodedData.interface'
 import { ConfigService } from '@nestjs/config'
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { sign, verify } from 'jsonwebtoken'
 import { TokensPair } from './types/TokensPair.interface'
 import { UserModel } from 'src/users/entities/user.model'
@@ -13,6 +13,11 @@ export class TokensService {
   verifyAccessToken(accessToken: string): EncodedData {
     const accessKey = this.ConfigService.get('accessKey')
     return verify(accessToken, accessKey) as EncodedData
+  }
+
+  verifyRefreshToken(refreshToken: string) {
+    const refreshKey = this.ConfigService.get('refreshKey')
+    return verify(refreshToken, refreshKey)
   }
 
   async generateTokenPair(userId: number): Promise<TokensPair> {
@@ -30,6 +35,9 @@ export class TokensService {
   async refreshTokenPair(refreshToken: string): Promise<TokensPair> {
     const token = await TokenModel.findOne({ where: { token: refreshToken } })
     if (!token) throw new UnauthorizedException()
+
+    try {this.verifyRefreshToken(refreshToken)} 
+    catch(e) {throw new UnauthorizedException()}
 
     const userId = token.user.id
     const tokensPair = await this.generateTokenPair(userId)
