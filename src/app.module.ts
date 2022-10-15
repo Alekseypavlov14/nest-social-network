@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module'
 import { ArticleModel } from './articles/entities/article.model'
 import { TokensModule } from './tokens/tokens.module'
 import { TokenModel } from './tokens/entities/token.model'
+import { AppController } from './app.controller'
 
 @Module({
   imports: [
@@ -35,7 +36,7 @@ import { TokenModel } from './tokens/entities/token.model'
     UsersModule,
     TokensModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
