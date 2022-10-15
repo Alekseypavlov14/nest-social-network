@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
-import { TokensService } from './../tokens/tokens.service'
+import { TokensService } from './tokens/tokens.service'
 import { Observable } from 'rxjs'
 import { Request } from 'express'
 
@@ -10,6 +10,9 @@ export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const request: Request = context.switchToHttp().getRequest();
     const authorizationHeader = request.headers.authorization
+
+    if (!authorizationHeader) return false
+
     const accessToken = authorizationHeader.split(' ')[1]
 
     try {this.TokensService.verifyAccessToken(accessToken)}

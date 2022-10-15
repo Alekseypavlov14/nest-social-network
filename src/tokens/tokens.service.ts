@@ -53,6 +53,7 @@ export class TokensService {
 
     const token = await TokenModel.findOne({ include: UserModel })
     if (!token) return await TokenModel.create({ user, token: refreshToken })
+      .catch(() => {throw new BadRequestException()})
 
     token.token = refreshToken
     return await token.save()

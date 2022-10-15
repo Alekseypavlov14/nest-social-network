@@ -1,7 +1,7 @@
 import { TokensService } from './../tokens/tokens.service';
 import { UsersService } from './../users/users.service'
 import { LoginUserDto } from './dto/LoginUser.dto'
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { RegisterUserDto } from './dto/RegisterUser.dto'
 import { compare, hash } from 'bcrypt'
 import { TokensPair } from 'src/tokens/types/TokensPair.interface';
@@ -35,6 +35,7 @@ export class AuthService {
 
     const userCreationModel = { login, password: passwordHash }
     const user = await this.UsersService.create(userCreationModel)
+      .catch(() => {throw new BadRequestException()})
 
     return await this.TokensService.generateTokenPair(user.id)
   }
