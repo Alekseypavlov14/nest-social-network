@@ -4,6 +4,7 @@ import { LoginUserDto } from './dto/LoginUser.dto'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { RegisterUserDto } from './dto/RegisterUser.dto'
 import { compare, hash } from 'bcrypt'
+import { TokensPair } from 'src/tokens/types/TokensPair.interface';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
 
   HASH_SALT = 7
 
-  async loginUser(user: LoginUserDto) {
+  async loginUser(user: LoginUserDto): Promise<TokensPair> {
     const { login, password } = user
 
     const candidate = await this.UsersService.findByLogin(login)
@@ -27,7 +28,7 @@ export class AuthService {
     return await this.TokensService.generateTokenPair(userId)
   }
 
-  async registerUser(RegisterUserDto: RegisterUserDto) {
+  async registerUser(RegisterUserDto: RegisterUserDto): Promise<TokensPair> {
     const { login, password } = RegisterUserDto
 
     const passwordHash = await hash(password, this.HASH_SALT)
