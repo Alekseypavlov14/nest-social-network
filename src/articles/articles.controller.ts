@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, HttpCode } from '@nestjs/common'
 import { AuthGuard } from 'src/auth.guard'
 import { ArticlesService } from './articles.service'
 import { CreateArticleDto } from './dto/create-article.dto'
@@ -9,6 +9,7 @@ export class ArticlesController {
 
   @UseGuards(AuthGuard)
   @Post()
+  @HttpCode(200)
   create(@Body() createArticleDto: CreateArticleDto) {
     return this.articlesService.create(createArticleDto)
   }
