@@ -16,7 +16,7 @@ export class UsersService {
     return await UserModel.findOne({ where: { login } })
   }
 
-  async remove(id: number) {
+  async delete(id: number) {
     return await UserModel.destroy({ where: { id } })
   }
 }

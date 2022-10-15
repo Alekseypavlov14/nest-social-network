@@ -1,26 +1,22 @@
+import { ArticleModel } from './entities/article.model';
 import { Injectable } from '@nestjs/common'
 import { CreateArticleDto } from './dto/create-article.dto'
-import { UpdateArticleDto } from './dto/update-article.dto'
 
 @Injectable()
 export class ArticlesService {
-  create(createArticleDto: CreateArticleDto) {
-    return 'This action adds a new article'
+  async create(createArticleDto: CreateArticleDto): Promise<ArticleModel> {
+    return await ArticleModel.create(createArticleDto)
   }
 
-  findAll() {
-    return `This action returns all articles`
+  async findAll(): Promise<ArticleModel[]>  {
+    return await ArticleModel.findAll()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} article`
+  async findOne(id: number): Promise<ArticleModel>  {
+    return await ArticleModel.findOne({where: { id }})
   }
 
-  update(id: number, updateArticleDto: UpdateArticleDto) {
-    return `This action updates a #${id} article`
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} article`
+  async delete(id: number) {
+    return await ArticleModel.destroy({where: { id }})
   }
 }

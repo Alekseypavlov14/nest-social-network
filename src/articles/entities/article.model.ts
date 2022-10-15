@@ -4,7 +4,7 @@ import { DataTypes } from 'sequelize'
 import { User } from 'src/users/entities/user.entity'
 
 export interface ArticleCreationModel {
-  authorId: number
+  author: User
   content: string
 }
 
